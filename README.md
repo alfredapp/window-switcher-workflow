@@ -6,14 +6,10 @@ Switch to a specific window of an app in the current Desktop Space
 
 ## About
 
-<!-- BEGIN ABOUT -->
-
 Use the Hotkey Trigger or run `win` to show app windows in the current Desktop Space.
 
-![](https://i.imgur.com/XRA6B8m.png)
+![Alfred search for win](Workflow/images/about/win.png)
 
 Type to filter by window or app and ↵ to switch to it.
-
-<!-- END ABOUT -->
 
 <a href='https://github.com/alfredapp/window-switcher-workflow/releases/latest/download/Window.Switcher.alfredworkflow'>⤓ Download Workflow</a>
