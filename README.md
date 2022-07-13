@@ -10,6 +10,6 @@ Use the Hotkey Trigger or run `win` to show app windows in the current Desktop S
 
 ![Alfred search for win](Workflow/images/about/win.png)
 
-Type to filter by window or app and ↵ to switch to it.
+Type to filter by window or app and ↩ to switch to it.
 
 <a href='https://github.com/alfredapp/window-switcher-workflow/releases/latest/download/Window.Switcher.alfredworkflow'>⤓ Download Workflow</a>
