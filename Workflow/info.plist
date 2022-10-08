@@ -59,103 +59,44 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>action</key>
-				<integer>0</integer>
-				<key>argument</key>
-				<integer>0</integer>
-				<key>focusedappvariable</key>
+				<key>concurrently</key>
 				<false/>
-				<key>focusedappvariablename</key>
-				<string></string>
-				<key>hotkey</key>
-				<integer>0</integer>
-				<key>hotmod</key>
-				<integer>0</integer>
-				<key>leftcursor</key>
-				<false/>
-				<key>modsmode</key>
-				<integer>0</integer>
-				<key>relatedAppsMode</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.hotkey</string>
-			<key>uid</key>
-			<string>6ADF26CF-C74E-42F5-9267-FBAF87960576</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>alfredfiltersresults</key>
-				<true/>
-				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
-				<key>argumenttreatemptyqueryasnil</key>
-				<true/>
-				<key>argumenttrimmode</key>
-				<integer>0</integer>
-				<key>argumenttype</key>
-				<integer>1</integer>
 				<key>escaping</key>
 				<integer>68</integer>
-				<key>keyword</key>
-				<string>win</string>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Gathering windows…</string>
 				<key>script</key>
-				<string>let script_filter_items = []
+				<string>// Helpers
+function quoted_form(input) { return "'" + input.toString().replace(/'/g, "'\\''") + "'" }
 
-Application('System Events').applicationProcesses.where({ backgroundOnly: false })().forEach(app =&gt; {
-	const app_windows = app.windows()
-	const app_name = app.name()
+// Set up
+ObjC.import('stdlib') // For $.getenv
 
-	if (app_windows.length &lt; 1) return // Skip if no windows found
+const app_name = $.getenv('app_name')
+const target_window_name = $.getenv('window_name')
 
-	app_windows.map(window =&gt; {
-		const window_name = (window.name().length &lt; 1) ? 'Unnamed' : window.name() // Default name for nameless windows
+const se = Application('System Events')
+const app = se.processes[app_name]
+const control = Application.currentApplication()
+control.includeStandardAdditions = true
 
-		script_filter_items.push({
-			'uid': window_name + app_name,
-			'title': window_name,
-			'subtitle': app_name,
-			'arg': 'See variables',
-			'icon': { 'type': 'fileicon', 'path': app.applicationFile().posixPath() },
-			'match': window_name + ' ' + app_name,
-			'variables': { 'app_name': app_name, 'window_name': window_name }
-		})
-	})
-})
+// Main
+// This brings the window to the front of the app
+app.windows().find(window =&gt; window.name() === target_window_name).actions['AXRaise'].perform()
 
-JSON.stringify({ 'items': script_filter_items })</string>
+// This brings only the frontmost window above other apps
+control.doShellScript('open ' + quoted_form(app.applicationFile().posixPath()))</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
-				<key>subtext</key>
-				<string>Switch to a specific window of an app in the current Desktop</string>
-				<key>title</key>
-				<string>Switch Window</string>
 				<key>type</key>
 				<integer>7</integer>
-				<key>withspace</key>
-				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>4324CC66-57F4-4183-9061-3D94423292FA</string>
+			<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
 			<key>version</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -255,52 +196,111 @@ fi</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>68</integer>
+				<key>keyword</key>
+				<string>{var:windows_keyword}</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Gathering windows…</string>
 				<key>script</key>
-				<string>// Helpers
-function quoted_form(input) { return "'" + input.toString().replace(/'/g, "'\\''") + "'" }
+				<string>let script_filter_items = []
 
-// Set up
-ObjC.import('stdlib') // For $.getenv
+Application('System Events').applicationProcesses.where({ backgroundOnly: false })().forEach(app =&gt; {
+	const app_windows = app.windows()
+	const app_name = app.name()
 
-const app_name = $.getenv('app_name')
-const target_window_name = $.getenv('window_name')
+	if (app_windows.length &lt; 1) return // Skip if no windows found
 
-const se = Application('System Events')
-const app = se.processes[app_name]
-const control = Application.currentApplication()
-control.includeStandardAdditions = true
+	app_windows.map(window =&gt; {
+		const window_name = (window.name().length &lt; 1) ? 'Unnamed' : window.name() // Default name for nameless windows
 
-// Main
-// This brings the window to the front of the app
-app.windows().find(window =&gt; window.name() === target_window_name).actions['AXRaise'].perform()
+		script_filter_items.push({
+			'uid': window_name + app_name,
+			'title': window_name,
+			'subtitle': app_name,
+			'arg': 'See variables',
+			'icon': { 'type': 'fileicon', 'path': app.applicationFile().posixPath() },
+			'match': window_name + ' ' + app_name,
+			'variables': { 'app_name': app_name, 'window_name': window_name }
+		})
+	})
+})
 
-// This brings only the frontmost window above other apps
-control.doShellScript('open ' + quoted_form(app.applicationFile().posixPath()))</string>
+JSON.stringify({ 'items': script_filter_items })</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
 				<string></string>
+				<key>subtext</key>
+				<string>Switch to a specific window of an app in the current Desktop</string>
+				<key>title</key>
+				<string>Switch Window</string>
 				<key>type</key>
 				<integer>7</integer>
+				<key>withspace</key>
+				<true/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
+			<string>4324CC66-57F4-4183-9061-3D94423292FA</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>0</integer>
+				<key>hotmod</key>
+				<integer>0</integer>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>6ADF26CF-C74E-42F5-9267-FBAF87960576</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Use the Hotkey Trigger or run `win` to show app windows in the current Desktop Space.
+	<string>## Usage
 
-![Alfred search for win](images/about/win.png)
+Run the Windows Keyword (default: `win`) to show app windows in the current Desktop Space. Type to filter by window or app. ↩ to switch to it.
 
-Type to filter by window or app and ↩ to switch to it.</string>
+![Alfred search for win](images/about/win.png)</string>
 	<key>uidata</key>
 	<dict>
 		<key>4324CC66-57F4-4183-9061-3D94423292FA</key>
@@ -343,9 +343,31 @@ Type to filter by window or app and ↩ to switch to it.</string>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
-	<array/>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>win</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Windows Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>windows_keyword</string>
+		</dict>
+	</array>
 	<key>version</key>
-	<string>2022.2</string>
+	<string>2022.3</string>
 	<key>webaddress</key>
 	<string>https://github.com/alfredapp/window-switcher-workflow/</string>
 </dict>
