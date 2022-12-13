@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.alfredapp.windowswitcher</string>
+	<string>com.alfredapp.vitor.windowswitcher</string>
 	<key>connections</key>
 	<dict>
 		<key>4324CC66-57F4-4183-9061-3D94423292FA</key>
@@ -20,18 +20,7 @@
 			</dict>
 		</array>
 		<key>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>5036F77B-7739-4220-80F8-75EF00EC448B</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
+		<array/>
 		<key>6ADF26CF-C74E-42F5-9267-FBAF87960576</key>
 		<array>
 			<dict>
@@ -101,101 +90,6 @@ control.doShellScript('open ' + quoted_form(app.applicationFile().posixPath()))<
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string># Special values for OneUpdater reuse
-readonly workflow_webaddress="$(/usr/libexec/PlistBuddy -c 'print webaddress' './info.plist')"
-readonly workflow_repo="$(basename "$(dirname "${workflow_webaddress}")")/$(basename "${workflow_webaddress}")"
-
-# THESE VARIABLES MUST BE SET. SEE THE ONEUPDATER README FOR AN EXPLANATION OF EACH.
-readonly remote_info_plist="${workflow_webaddress}/raw/main/Workflow/info.plist"
-readonly workflow_url="${workflow_repo}"
-readonly download_type='github_release'
-readonly frequency_check='4'
-
-# FROM HERE ON, CODE SHOULD BE LEFT UNTOUCHED!
-function abort {
-  echo "${1}" &gt;&amp;2
-  exit 1
-}
-
-function url_exists {
-  curl --silent --location --output /dev/null --fail --range 0-0 "${1}"
-}
-
-function notification {
-  local -r notificator="$(find . -type d -name 'Notificator.app')"
-  if [[ -n "${notificator}" ]]; then
-    "${notificator}/Contents/Resources/Scripts/notificator" --message "${1}" --title "${alfred_workflow_name}" --subtitle 'A new version is available'
-    return
-  fi
-
-  local -r terminal_notifier="$(find . -type f -name 'terminal-notifier')"
-  if [[ -n "${terminal_notifier}" ]]; then
-    "${terminal_notifier}" -title "${alfred_workflow_name}" -subtitle 'A new version is available' -message "${1}"
-    return
-  fi
-
-  osascript -e "display notification \"${1}\" with title \"${alfred_workflow_name}\" subtitle \"A new version is available\""
-}
-
-# Local sanity checks
-readonly local_info_plist='info.plist'
-readonly local_version="$(/usr/libexec/PlistBuddy -c 'print version' "${local_info_plist}")"
-
-[[ -n "${local_version}" ]] || abort 'You need to set a workflow version in the configuration sheet.'
-[[ "${download_type}" =~ ^(direct|page|github_release)$ ]] || abort "'download_type' (${download_type}) needs to be one of 'direct', 'page', or 'github_release'."
-[[ "${frequency_check}" =~ ^[0-9]+$ ]] || abort "'frequency_check' (${frequency_check}) needs to be a number."
-
-# Check for updates
-if [[ $(find "${local_info_plist}" -mtime +"${frequency_check}"d) ]]; then
-  if ! url_exists "${remote_info_plist}"; then abort "'remote_info_plist' (${remote_info_plist}) appears to not be reachable."; fi # Remote sanity check
-
-  readonly tmp_file="$(mktemp)"
-  curl --silent --location --output "${tmp_file}" "${remote_info_plist}"
-  readonly remote_version="$(/usr/libexec/PlistBuddy -c 'print version' "${tmp_file}")"
-
-  if [[ "${local_version}" == "${remote_version}" ]]; then
-    touch "${local_info_plist}" # Reset timer by touching local file
-    exit 0
-  fi
-
-  if [[ "${download_type}" == 'page' ]]; then
-    notification 'Opening download page…'
-    open "${workflow_url}"
-    exit 0
-  fi
-
-  download_url="$([[ "${download_type}" == 'github_release' ]] &amp;&amp; curl --silent "https://api.github.com/repos/${workflow_url}/releases/latest" | grep 'browser_download_url' | head -1 | sed -E 's/.*browser_download_url": "(.*)"/\1/' || echo "${workflow_url}")"
-
-  if url_exists "${download_url}"; then
-    notification 'Downloading and installing…'
-    curl --silent --location --output "${HOME}/Downloads/${alfred_workflow_name}.alfredworkflow" "${download_url}"
-    open "${HOME}/Downloads/${alfred_workflow_name}.alfredworkflow"
-  else
-    abort "'workflow_url' (${download_url}) appears to not be reachable."
-  fi
-fi</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>5036F77B-7739-4220-80F8-75EF00EC448B</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -221,30 +115,31 @@ fi</string>
 				<key>runningsubtext</key>
 				<string>Gathering windows…</string>
 				<key>script</key>
-				<string>let script_filter_items = []
+				<string>let scriptFilterItems = []
+const runningApps = Application("System Events").applicationProcesses.where({ backgroundOnly: false })()
 
-Application('System Events').applicationProcesses.where({ backgroundOnly: false })().forEach(app =&gt; {
-	const app_windows = app.windows()
-	const app_name = app.name()
+runningApps.forEach(app =&gt; {
+  const appWindows = app.windows()
+  if (appWindows.length &lt; 1) return // Skip if no windows found
+  const appName = app.name()
+  const appPath = app.applicationFile().posixPath()
 
-	if (app_windows.length &lt; 1) return // Skip if no windows found
+  appWindows.map(window =&gt; {
+    const windowName = (window.name().length &lt; 1) ? "Unnamed" : window.name() // Default name for nameless windows
 
-	app_windows.map(window =&gt; {
-		const window_name = (window.name().length &lt; 1) ? 'Unnamed' : window.name() // Default name for nameless windows
-
-		script_filter_items.push({
-			'uid': window_name + app_name,
-			'title': window_name,
-			'subtitle': app_name,
-			'arg': 'See variables',
-			'icon': { 'type': 'fileicon', 'path': app.applicationFile().posixPath() },
-			'match': window_name + ' ' + app_name,
-			'variables': { 'app_name': app_name, 'window_name': window_name }
-		})
-	})
+    scriptFilterItems.push({
+      uid: windowName + appName,
+      title: windowName,
+      subtitle: appName,
+      arg: "See variables",
+      icon: { type: "fileicon", path: appPath },
+      match: windowName + " " + appName,
+      variables: { app_name: appName, window_name: windowName }
+    })
+  })
 })
 
-JSON.stringify({ 'items': script_filter_items })</string>
+JSON.stringify({ items: scriptFilterItems })</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -298,7 +193,7 @@ JSON.stringify({ 'items': script_filter_items })</string>
 	<key>readme</key>
 	<string>## Usage
 
-Run the Windows Keyword (default: `win`) to show app windows in the current Desktop Space. Type to filter by window or app. ↩ to switch to it.
+Search app windows in the current Desktop Space via the Windows Keyword (default: `win`). &lt;kbd&gt;↩&lt;/kbd&gt; to switch to the selection.
 
 ![Alfred search for win](images/about/win.png)</string>
 	<key>uidata</key>
@@ -318,17 +213,6 @@ Run the Windows Keyword (default: `win`) to show app windows in the current Desk
 			<string>Switch to window</string>
 			<key>xpos</key>
 			<real>425</real>
-			<key>ypos</key>
-			<real>40</real>
-		</dict>
-		<key>5036F77B-7739-4220-80F8-75EF00EC448B</key>
-		<dict>
-			<key>colorindex</key>
-			<integer>12</integer>
-			<key>note</key>
-			<string>OneUpdater</string>
-			<key>xpos</key>
-			<real>610</real>
 			<key>ypos</key>
 			<real>40</real>
 		</dict>
@@ -367,7 +251,7 @@ Run the Windows Keyword (default: `win`) to show app windows in the current Desk
 		</dict>
 	</array>
 	<key>version</key>
-	<string>2022.3</string>
+	<string>2022.4</string>
 	<key>webaddress</key>
 	<string>https://github.com/alfredapp/window-switcher-workflow/</string>
 </dict>
