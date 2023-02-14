@@ -10,7 +10,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
+				<string>82CDD910-A6C3-4F66-8394-90150AF91668</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -34,6 +34,31 @@
 				<false/>
 			</dict>
 		</array>
+		<key>82CDD910-A6C3-4F66-8394-90150AF91668</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>C95ACB3C-10F8-4759-909F-525F6F31008A</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Vítor Galvão</string>
@@ -48,44 +73,23 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>68</integer>
-				<key>script</key>
-				<string>// Helpers
-function quoted_form(input) { return "'" + input.toString().replace(/'/g, "'\\''") + "'" }
-
-// Set up
-ObjC.import('stdlib') // For $.getenv
-
-const app_name = $.getenv('app_name')
-const target_window_name = $.getenv('window_name')
-
-const se = Application('System Events')
-const app = se.processes[app_name]
-const control = Application.currentApplication()
-control.includeStandardAdditions = true
-
-// Main
-// This brings the window to the front of the app
-app.windows().find(window =&gt; window.name() === target_window_name).actions['AXRaise'].perform()
-
-// This brings only the frontmost window above other apps
-control.doShellScript('open ' + quoted_form(app.applicationFile().posixPath()))</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
+				<key>browser</key>
 				<string></string>
-				<key>type</key>
-				<integer>7</integer>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture</string>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.script</string>
+			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
-			<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
+			<string>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -143,13 +147,13 @@ JSON.stringify({ items: scriptFilterItems })</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
-				<string></string>
+				<string>get-windows</string>
 				<key>subtext</key>
 				<string>Switch to a specific window of an app in the current Desktop</string>
 				<key>title</key>
 				<string>Switch Window</string>
 				<key>type</key>
-				<integer>7</integer>
+				<integer>8</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -172,9 +176,11 @@ JSON.stringify({ items: scriptFilterItems })</string>
 				<key>focusedappvariablename</key>
 				<string></string>
 				<key>hotkey</key>
-				<integer>0</integer>
+				<integer>46</integer>
 				<key>hotmod</key>
-				<integer>0</integer>
+				<integer>1572864</integer>
+				<key>hotstring</key>
+				<string>M</string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -189,13 +195,104 @@ JSON.stringify({ items: scriptFilterItems })</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string></string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>0</integer>
+						<key>matchstring</key>
+						<string>request_permissions</string>
+						<key>outputlabel</key>
+						<string>Request Permissions</string>
+						<key>uid</key>
+						<string>C95ACB3C-10F8-4759-909F-525F6F31008A</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>Raise Window</string>
+				<key>hideelse</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>82CDD910-A6C3-4F66-8394-90150AF91668</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+function openApp(appPath) {
+  const task = $.NSTask.alloc.init
+  const stdout = $.NSPipe.pipe
+
+  task.executableURL = $.NSURL.alloc.initFileURLWithPath("/usr/bin/env")
+  task.arguments = ["/usr/bin/open", appPath]
+  task.launchAndReturnError(false)
+}
+
+const appName = envVar("app_name")
+const appPath = envVar("app_path")
+const windowName = envVar("window_name")
+const emptyName = envVar("empty_name") === "1"
+
+const systemEvents = Application("System Events")
+const appProcess = systemEvents.processes[appName]
+
+if (!emptyName) {
+  // Bring the window to the front of the app
+  appProcess
+    .windows()
+    .find(window =&gt; window.name() === windowName)
+    .actions["AXRaise"]
+    .perform()
+}
+
+// Bring only the frontmost window above other apps
+openApp(appPath)</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>raise-window</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Usage
 
 Search app windows in the current Desktop Space via the Windows Keyword (default: `win`). &lt;kbd&gt;↩&lt;/kbd&gt; to switch to the selection.
 
-![Alfred search for win](images/about/win.png)</string>
+![Alfred search for win](images/about/win.png)
+
+Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.</string>
 	<key>uidata</key>
 	<dict>
 		<key>4324CC66-57F4-4183-9061-3D94423292FA</key>
@@ -209,12 +306,10 @@ Search app windows in the current Desktop Space via the Windows Keyword (default
 		</dict>
 		<key>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</key>
 		<dict>
-			<key>note</key>
-			<string>Switch to window</string>
 			<key>xpos</key>
-			<real>425</real>
+			<real>590</real>
 			<key>ypos</key>
-			<real>40</real>
+			<real>175</real>
 		</dict>
 		<key>6ADF26CF-C74E-42F5-9267-FBAF87960576</key>
 		<dict>
@@ -222,6 +317,20 @@ Search app windows in the current Desktop Space via the Windows Keyword (default
 			<string>Optional Hotkey to invoke window selection</string>
 			<key>xpos</key>
 			<real>45</real>
+			<key>ypos</key>
+			<real>40</real>
+		</dict>
+		<key>82CDD910-A6C3-4F66-8394-90150AF91668</key>
+		<dict>
+			<key>xpos</key>
+			<real>410</real>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</key>
+		<dict>
+			<key>xpos</key>
+			<real>590</real>
 			<key>ypos</key>
 			<real>40</real>
 		</dict>
@@ -250,8 +359,10 @@ Search app windows in the current Desktop Space via the Windows Keyword (default
 			<string>windows_keyword</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
-	<string>2022.4</string>
+	<string>2023.1</string>
 	<key>webaddress</key>
 	<string>https://github.com/alfredapp/window-switcher-workflow/</string>
 </dict>
