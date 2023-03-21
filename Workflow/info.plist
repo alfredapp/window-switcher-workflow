@@ -288,7 +288,7 @@ openApp(appPath)</string>
 	<key>readme</key>
 	<string>## Usage
 
-Search app windows in the current Desktop Space via the Windows Keyword (default: `win`). &lt;kbd&gt;↩&lt;/kbd&gt; to switch to the selection.
+Search app windows in the current Desktop Space via the `win` keyword. &lt;kbd&gt;↩&lt;/kbd&gt; to switch to the selection.
 
 ![Alfred search for win](images/about/win.png)
 
@@ -359,8 +359,6 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<string>windows_keyword</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>2023.1</string>
 	<key>webaddress</key>
