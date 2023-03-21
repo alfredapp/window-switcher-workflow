@@ -2,11 +2,11 @@
 
 Switch to a specific window of an app in the current Desktop Space
 
-<a href='https://alfred.app/workflows/alfredapp/window-switcher'>⤓ Install on the Alfred Gallery</a>
+[⤓ Install on the Alfred Gallery](https://alfred.app/workflows/alfredapp/window-switcher)
 
 ## Usage
 
-Search app windows in the current Desktop Space via the Windows Keyword (default: `win`). <kbd>↩&#xFE0E;</kbd> to switch to the selection.
+Search app windows in the current Desktop Space via the `win` keyword. <kbd>↩&#xFE0E;</kbd> to switch to the selection.
 
 ![Alfred search for win](Workflow/images/about/win.png)
 
