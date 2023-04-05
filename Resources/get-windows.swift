@@ -8,7 +8,8 @@ let windowList: CFArray? = CGWindowListCopyWindowInfo(
 guard let windows = windowList as? [[String: Any]] else { fatalError("Unable to get window list") }
 
 let sfItems = windows.compactMap { (dict: [String: Any]) -> [String: Any]? in
-  guard dict["kCGWindowLayer"] as? Int == 0,
+  guard
+    dict["kCGWindowLayer"] as? Int == 0,
     let appName = dict["kCGWindowOwnerName"] as? String,
     let appPID = dict["kCGWindowOwnerPID"] as? Int32,
     let windowTitle = dict["kCGWindowName"] as? String,
@@ -38,6 +39,7 @@ if sfItems.isEmpty {
       ]
     ]
   ]
+
   let jsonData: Data = try JSONSerialization.data(withJSONObject: alfredObject)
   let jsonString: String = String(data: jsonData, encoding: .utf8)!
 
