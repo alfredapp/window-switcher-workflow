@@ -1,6 +1,7 @@
 #!/usr/bin/env swift
 
-guard let appPID = Int(CommandLine.arguments[1]),
+guard
+  let appPID = Int(CommandLine.arguments[1]),
   let windowNumber = Int(CommandLine.arguments[2])
 else { fatalError("Requires two arguments: app PID and window number") }
 
