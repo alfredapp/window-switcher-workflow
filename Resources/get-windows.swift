@@ -25,7 +25,10 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
     let appPID = dict["kCGWindowOwnerPID"] as? Int32,
     let windowTitle = dict["kCGWindowName"] as? String,
     let windowID = dict["kCGWindowNumber"] as? Int32,
-    let appPath = NSRunningApplication(processIdentifier: appPID)?.bundleURL?.path
+    let appPath = NSRunningApplication(processIdentifier: appPID)?.bundleURL?.path,
+    // Ignore tiny windows like Safari's status bar
+    let windowBounds = dict["kCGWindowBounds"] as? [String: Int],
+    windowBounds["Height"] ?? 0 > 20
   else { return nil }
 
   let windowName = windowTitle.isEmpty ? "Unnamed" : windowTitle
