@@ -23,14 +23,17 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
     dict["kCGWindowLayer"] as? Int == 0,
     let appName = dict["kCGWindowOwnerName"] as? String,
     let appPID = dict["kCGWindowOwnerPID"] as? Int32,
-    let windowTitle = dict["kCGWindowName"] as? String,
     let windowID = dict["kCGWindowNumber"] as? Int32,
     let appPath = NSRunningApplication(processIdentifier: appPID)?.bundleURL?.path,
-    // Ignore tiny windows like Safari's status bar
-    let windowBounds = dict["kCGWindowBounds"] as? [String: Int],
-    windowBounds["Height"] ?? 0 > 20
+    let windowTitle = dict["kCGWindowName"] as? String,
+    // Unnamed windows with a low height are generally safe to ignore
+    // Examples include Safari's 20px status bar and a 68px invisible window present on full screen apps
+    let windowBounds = dict["kCGWindowBounds"] as? [String: Int32],
+    let windowHeight = windowBounds["Height"],
+    !windowTitle.isEmpty && windowHeight > 70
   else { return nil }
 
+  // Some apps (e.g. Reeder) have legitimate windows without a name
   let windowName = windowTitle.isEmpty ? "Unnamed" : windowTitle
 
   return ScriptFilterItem(
