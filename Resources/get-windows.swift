@@ -21,7 +21,7 @@ guard let windows = windowList as? [[String: Any]] else { fatalError("Unable to 
 let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
   guard
     dict["kCGWindowLayer"] as? Int == 0,
-    let appName = dict["kCGWindowOwnerName"] as? String,
+    let appRawName = dict["kCGWindowOwnerName"] as? String,
     let appPID = dict["kCGWindowOwnerPID"] as? Int32,
     let windowID = dict["kCGWindowNumber"] as? Int32,
     let appPath = NSRunningApplication(processIdentifier: appPID)?.bundleURL?.path,
@@ -30,11 +30,14 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
     // Examples include Safari's 20px status bar and a 68px invisible window present on full screen apps
     let windowBounds = dict["kCGWindowBounds"] as? [String: Int32],
     let windowHeight = windowBounds["Height"],
-    !windowTitle.isEmpty && windowHeight > 70
+    !windowTitle.isEmpty || windowHeight > 70
   else { return nil }
 
+  // Some apps (e.g. Reeder) have the ".app" extension in "kCGWindowOwnerName"
+  let appName = URL(fileURLWithPath: appRawName).deletingPathExtension().lastPathComponent
+
   // Some apps (e.g. Reeder) have legitimate windows without a name
-  let windowName = windowTitle.isEmpty ? "Unnamed" : windowTitle
+  let windowName = windowTitle.isEmpty ? appName : windowTitle
 
   return ScriptFilterItem(
     title: windowName,
