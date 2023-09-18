@@ -26,6 +26,8 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
     let windowID = dict["kCGWindowNumber"] as? Int32,
     let appPath = NSRunningApplication(processIdentifier: appPID)?.bundleURL?.path,
     let windowTitle = dict["kCGWindowName"] as? String,
+    // When using Stage Manager, there are a lot of extra windows from Window Manager
+    appRawName != "WindowManager",
     // Unnamed windows with a low height are generally safe to ignore
     // Examples include Safari's 20px status bar and a 68px invisible window present on full screen apps
     let windowBounds = dict["kCGWindowBounds"] as? [String: Int32],
