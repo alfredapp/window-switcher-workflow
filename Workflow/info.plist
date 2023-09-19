@@ -38,7 +38,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</string>
+				<string>BD68FEF5-ECE3-4AAE-8460-2066D5AD1C70</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -73,23 +73,59 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>browser</key>
-				<string></string>
-				<key>skipqueryencode</key>
+				<key>concurrently</key>
 				<false/>
-				<key>skipvarencode</key>
-				<false/>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture</string>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>function envVar(varName) {
+  return $.NSProcessInfo
+    .processInfo
+    .environment
+    .objectForKey(varName).js
+}
+
+function openApp(appPath) {
+  const task = $.NSTask.alloc.init
+  const stdout = $.NSPipe.pipe
+
+  task.executableURL = $.NSURL.alloc.initFileURLWithPath("/usr/bin/env")
+  task.arguments = ["/usr/bin/open", appPath]
+  task.launchAndReturnError(false)
+}
+
+const appName = envVar("app_name")
+const appPath = envVar("app_path")
+const windowName = envVar("window_name")
+const emptyName = envVar("empty_name") === "1"
+
+const systemEvents = Application("System Events")
+const appProcess = systemEvents.processes[appName]
+
+if (!emptyName) {
+  // Bring the window to the front of the app
+  appProcess
+    .windows()
+    .find(window =&gt; window.name() === windowName)
+    .actions["AXRaise"]
+    .perform()
+}
+
+// Bring only the frontmost window above other apps
+openApp(appPath)</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>request-recording</string>
+				<key>type</key>
+				<integer>8</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</string>
+			<string>BD68FEF5-ECE3-4AAE-8460-2066D5AD1C70</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -119,31 +155,7 @@
 				<key>runningsubtext</key>
 				<string>Gathering windows…</string>
 				<key>script</key>
-				<string>let scriptFilterItems = []
-const runningApps = Application("System Events").applicationProcesses.where({ backgroundOnly: false })()
-
-runningApps.forEach(app =&gt; {
-  const appWindows = app.windows()
-  if (appWindows.length &lt; 1) return // Skip if no windows found
-  const appName = app.name()
-  const appPath = app.applicationFile().posixPath()
-
-  appWindows.map(window =&gt; {
-    const windowName = (window.name().length &lt; 1) ? "Unnamed" : window.name() // Default name for nameless windows
-
-    scriptFilterItems.push({
-      uid: windowName + appName,
-      title: windowName,
-      subtitle: appName,
-      arg: "See variables",
-      icon: { type: "fileicon", path: appPath },
-      match: windowName + " " + appName,
-      variables: { app_name: appName, window_name: windowName }
-    })
-  })
-})
-
-JSON.stringify({ items: scriptFilterItems })</string>
+				<string></string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -233,43 +245,9 @@ JSON.stringify({ items: scriptFilterItems })</string>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>68</integer>
+				<integer>0</integer>
 				<key>script</key>
-				<string>function envVar(varName) {
-  return $.NSProcessInfo
-    .processInfo
-    .environment
-    .objectForKey(varName).js
-}
-
-function openApp(appPath) {
-  const task = $.NSTask.alloc.init
-  const stdout = $.NSPipe.pipe
-
-  task.executableURL = $.NSURL.alloc.initFileURLWithPath("/usr/bin/env")
-  task.arguments = ["/usr/bin/open", appPath]
-  task.launchAndReturnError(false)
-}
-
-const appName = envVar("app_name")
-const appPath = envVar("app_path")
-const windowName = envVar("window_name")
-const emptyName = envVar("empty_name") === "1"
-
-const systemEvents = Application("System Events")
-const appProcess = systemEvents.processes[appName]
-
-if (!emptyName) {
-  // Bring the window to the front of the app
-  appProcess
-    .windows()
-    .find(window =&gt; window.name() === windowName)
-    .actions["AXRaise"]
-    .perform()
-}
-
-// Bring only the frontmost window above other apps
-openApp(appPath)</string>
+				<string></string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -327,7 +305,7 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<key>ypos</key>
 			<real>60</real>
 		</dict>
-		<key>96A6EC3C-B1A1-400B-9EF7-A54EB3F83CD3</key>
+		<key>BD68FEF5-ECE3-4AAE-8460-2066D5AD1C70</key>
 		<dict>
 			<key>xpos</key>
 			<real>590</real>

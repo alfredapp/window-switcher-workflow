@@ -52,10 +52,13 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
 
 // Fallback if no valid items
 guard !sfItems.isEmpty else {
+  let subtitle = CGPreflightScreenCaptureAccess() ?
+    "Make sure there are unminimised windows in the current Desktop Space" :
+    "Press ↩ to request Screen Recording permissions, necessary to get window information"
+
   let notFound = [
     "title": "No Windows Found",
-    "subtitle":
-      "Make sure Alfred has Screen Recording permissions. Press ↩ to open System Settings.",
+    "subtitle": subtitle,
     "arg": "request_permissions"
   ]
 
