@@ -2,6 +2,26 @@
 
 import AppKit
 
+var windowFilter = CGWindowListOption.optionOnScreenOnly;
+
+
+for argument in CommandLine.arguments {
+    switch argument {
+    case "--all":
+        windowFilter = CGWindowListOption.optionAll
+
+    case "--help":
+        fallthrough
+    case "-h":
+        print("Arguments:")
+        print("  --all      Include minimized and hidden windows")
+        exit(1)
+
+    default:
+        continue
+    }
+}
+
 // Helpers
 struct ScriptFilterItem: Codable {
   let title: String
@@ -13,7 +33,7 @@ struct ScriptFilterItem: Codable {
 
 // Grab windows
 let windowList: CFArray? = CGWindowListCopyWindowInfo(
-  [.optionOnScreenOnly, .excludeDesktopElements], kCGNullWindowID)
+  [windowFilter, .excludeDesktopElements], kCGNullWindowID)
 
 guard let windows = windowList as? [[String: Any]] else { fatalError("Unable to get window list") }
 
