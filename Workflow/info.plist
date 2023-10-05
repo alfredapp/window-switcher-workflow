@@ -76,43 +76,9 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>68</integer>
+				<integer>0</integer>
 				<key>script</key>
-				<string>function envVar(varName) {
-  return $.NSProcessInfo
-    .processInfo
-    .environment
-    .objectForKey(varName).js
-}
-
-function openApp(appPath) {
-  const task = $.NSTask.alloc.init
-  const stdout = $.NSPipe.pipe
-
-  task.executableURL = $.NSURL.alloc.initFileURLWithPath("/usr/bin/env")
-  task.arguments = ["/usr/bin/open", appPath]
-  task.launchAndReturnError(false)
-}
-
-const appName = envVar("app_name")
-const appPath = envVar("app_path")
-const windowName = envVar("window_name")
-const emptyName = envVar("empty_name") === "1"
-
-const systemEvents = Application("System Events")
-const appProcess = systemEvents.processes[appName]
-
-if (!emptyName) {
-  // Bring the window to the front of the app
-  appProcess
-    .windows()
-    .find(window =&gt; window.name() === windowName)
-    .actions["AXRaise"]
-    .perform()
-}
-
-// Bring only the frontmost window above other apps
-openApp(appPath)</string>
+				<string></string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
