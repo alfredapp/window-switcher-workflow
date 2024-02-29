@@ -59,6 +59,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>D7455512-A831-4586-8692-E2D2F4B0B802</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>4324CC66-57F4-4183-9061-3D94423292FA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Vítor Galvão</string>
@@ -230,6 +243,21 @@
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>availableviaurlhandler</key>
+				<false/>
+				<key>triggerid</key>
+				<string>list_windows</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.external</string>
+			<key>uid</key>
+			<string>D7455512-A831-4586-8692-E2D2F4B0B802</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Usage
@@ -255,7 +283,7 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<key>xpos</key>
 			<real>590</real>
 			<key>ypos</key>
-			<real>175</real>
+			<real>200</real>
 		</dict>
 		<key>6ADF26CF-C74E-42F5-9267-FBAF87960576</key>
 		<dict>
@@ -279,6 +307,13 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<real>590</real>
 			<key>ypos</key>
 			<real>40</real>
+		</dict>
+		<key>D7455512-A831-4586-8692-E2D2F4B0B802</key>
+		<dict>
+			<key>xpos</key>
+			<real>45</real>
+			<key>ypos</key>
+			<real>200</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
