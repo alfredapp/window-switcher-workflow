@@ -341,7 +341,7 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 		</dict>
 	</array>
 	<key>version</key>
-	<string>2023.8</string>
+	<string>2024.1</string>
 	<key>webaddress</key>
 	<string>https://github.com/alfredapp/window-switcher-workflow/</string>
 </dict>
