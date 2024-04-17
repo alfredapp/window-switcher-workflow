@@ -18,6 +18,16 @@
 				<key>vitoclose</key>
 				<false/>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>E3CE2174-60F6-4DDA-9D12-84B0CA5C4271</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Quit {var:app_name}</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
 		</array>
 		<key>463DA12A-D0C4-437F-BD05-B512C4FF5DCA</key>
 		<array/>
@@ -72,6 +82,19 @@
 				<false/>
 			</dict>
 		</array>
+		<key>E3CE2174-60F6-4DDA-9D12-84B0CA5C4271</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>635BD118-84F5-4946-9311-7AA82F846279</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Vítor Galvão</string>
@@ -83,29 +106,6 @@
 	<string>Window Switcher</string>
 	<key>objects</key>
 	<array>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string></string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string>request-recording</string>
-				<key>type</key>
-				<integer>8</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>BD68FEF5-ECE3-4AAE-8460-2066D5AD1C70</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -191,6 +191,29 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>request-recording</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>BD68FEF5-ECE3-4AAE-8460-2066D5AD1C70</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>conditions</key>
 				<array>
 					<dict>
@@ -258,13 +281,42 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>tasksettings</key>
+				<dict>
+					<key>app_list</key>
+					<string>{var:app_name}</string>
+				</dict>
+				<key>taskuid</key>
+				<string>com.alfredapp.automation.core/macOS/app.quit</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.automation.task</string>
+			<key>uid</key>
+			<string>635BD118-84F5-4946-9311-7AA82F846279</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.junction</string>
+			<key>uid</key>
+			<string>E3CE2174-60F6-4DDA-9D12-84B0CA5C4271</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Usage
 
-Search app windows in the current Desktop Space via the `win` keyword. &lt;kbd&gt;↩&lt;/kbd&gt; to switch to the selection.
+Search app windows in the current Desktop Space via the `win` keyword.
 
 ![Alfred search for win](images/about/win.png)
+
+* &lt;kbd&gt;↩&lt;/kbd&gt; Bring window to the front.
+* &lt;kbd&gt;⌘&lt;/kbd&gt;&lt;kbd&gt;↩&lt;/kbd&gt; Quit app.
 
 Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/) for faster triggering.</string>
 	<key>uidata</key>
@@ -284,6 +336,13 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<real>590</real>
 			<key>ypos</key>
 			<real>200</real>
+		</dict>
+		<key>635BD118-84F5-4946-9311-7AA82F846279</key>
+		<dict>
+			<key>xpos</key>
+			<real>590</real>
+			<key>ypos</key>
+			<real>335</real>
 		</dict>
 		<key>6ADF26CF-C74E-42F5-9267-FBAF87960576</key>
 		<dict>
@@ -315,6 +374,13 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<key>ypos</key>
 			<real>200</real>
 		</dict>
+		<key>E3CE2174-60F6-4DDA-9D12-84B0CA5C4271</key>
+		<dict>
+			<key>xpos</key>
+			<real>455</real>
+			<key>ypos</key>
+			<real>365</real>
+		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
 	<array>
@@ -340,6 +406,8 @@ Configure the [Hotkey](https://www.alfredapp.com/help/workflows/triggers/hotkey/
 			<string>windows_keyword</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>2024.1</string>
 	<key>webaddress</key>

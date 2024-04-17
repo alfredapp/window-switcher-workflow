@@ -4,6 +4,7 @@ import AppKit
 
 // Helpers
 struct ScriptFilterItem: Codable {
+  let variables: [String: String]
   let title: String
   let subtitle: String
   let arg: [Int32]
@@ -42,6 +43,7 @@ let sfItems: [ScriptFilterItem] = windows.compactMap { dict in
   let windowName = windowTitle.isEmpty ? appName : windowTitle
 
   return ScriptFilterItem(
+    variables: ["app_name": appName],
     title: windowName,
     subtitle: appName,
     arg: [appPID, windowID],
